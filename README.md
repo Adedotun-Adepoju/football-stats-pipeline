@@ -10,3 +10,9 @@ For passionate football fans like myself, football statistics are very important
     - Player stats such as goals, injuries e.t.c 
 
 ## Main goal
+Develop a ETLT data pipeline and dashboard for viewing statistics of clubs in England:
+    - Call the neccessary API endpoints
+    - Create a pipeline for processing the data gotten from the API and converting it to format that can be saved to a data-lake
+    - Create a pipeline for moving the data from the data lake to a data warehouse
+    - Transform the data in the warehouse: prepare it for use by the BI tool
+    - Create a dashboard
