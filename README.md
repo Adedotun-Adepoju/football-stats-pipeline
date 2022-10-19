@@ -27,3 +27,7 @@ Develop an ETLT data pipeline and dashboard for viewing statistics of clubs in E
 - Data Warehouse: BigQuery
 - Transformations: dbt cloud
 - Dashboard: Google Data Studio
+### ARCHITECTURE
+<p align="left">
+    <img alt="pipelien architecture" src="./assets/architecture.png">
+</p>
