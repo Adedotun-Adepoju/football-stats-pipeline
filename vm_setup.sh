@@ -39,7 +39,7 @@ fi
 echo -e "\nRunning sudo apt-get update...\n"
 sudo apt-get update 
 
-echo -e "\nInstalling Docjer...\n"
+echo -e "\nInstalling Docker...\n"
 sudo apt=get -y install docker.io 
 
 echo -e "\nInstalling docker-compose...\n"
@@ -69,7 +69,7 @@ echo "anaconda-navigator version $(anaconda-navigator --version)"
 anaconda --version
 conda --version
 
-echo -e "\nSetting up Docker without sudo serup...\n"
+echo -e "\nSetting up Docker without sudo setup...\n"
 sudo groupadd docker 
 sudo usermod -aG docker $USER
 newgrp docker
