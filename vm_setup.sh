@@ -40,7 +40,7 @@ echo -e "\nRunning sudo apt-get update...\n"
 sudo apt-get update 
 
 echo -e "\nInstalling Docker...\n"
-sudo apt=get -y install docker.io 
+sudo apt-get -y install docker.io 
 
 echo -e "\nInstalling docker-compose...\n"
 cd 
@@ -62,9 +62,9 @@ echo -e 'export PATH=${HOME}/bin:${PATH}' >> ~/.bashrc
 echo -e ''>> ~/.bashrc
 echo -e 'export GOOGLE_APPLICATION_CREDENTIALS="${HOME}/.google/credentials/google_credentials.json"' >> ~/.bashrc
 
-terraform -version
+terraform --version
 sudo docker --version
-docker-compose version 
+docker-compose --version 
 echo "anaconda-navigator version $(anaconda-navigator --version)"
 anaconda --version
 conda --version
