@@ -94,7 +94,7 @@ def get_english_teams(login_url, target_url, email, password):
                 extracted_values = [value.text for value in values]
                 id_to_team_name[extracted_values[0]] = extracted_values[1]
 
-        print(id_to_team_name)
+        #print(id_to_team_name)
 
     except:    
         print("an error occured") 
