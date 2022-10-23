@@ -1,6 +1,7 @@
 import os
 from urllib.request import urlopen
 from bs4 import BeautifulSoup
+import pandas as pd 
 
 from dotenv import load_dotenv
 
@@ -80,7 +81,7 @@ def get_english_teams(login_url, target_url, email, password):
         select.select_by_value('50')
 
         content = driver.page_source
-        soup = BeautifulSoup(content)
+        soup = BeautifulSoup(content, features="lxml")
 
         table = soup.find("table", id="dataTable")
         t_body = table.find("tbody")
@@ -125,14 +126,16 @@ if __name__ == "__main__":
         elif(parts[1] in id_team_name_keys):
             needed_mappings[club] = id_team_name_mapping[parts[1]]
 
-    print(needed_mappings)
+    team_names = needed_mappings.keys()
+    team_ids = needed_mappings.values()
 
+    data = {'team_id': team_ids,
+        'team_name': team_names}
 
-    # for k,v in id_team_name_mapping.items():
-    #     if k in current_clubs:
-    #         needed_mappings[k] = v
+    df = pd.DataFrame(columns = ['team_id', 'team_name'], data = data)
 
-    # print(needed_mappings)
+    # save the csv file 
+    df.to_csv('teams.csv', index=False)
 
 
     
