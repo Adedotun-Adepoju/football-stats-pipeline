@@ -38,7 +38,6 @@ def get_current_teams(url):
         club_links = result.find_all("a")
         club = club_links[2].text
         current_clubs.append(club)
-
     return current_clubs 
 
 def get_english_teams(login_url, target_url, email, password):
@@ -92,9 +91,9 @@ def get_english_teams(login_url, target_url, email, password):
             if i > 0:
                 values = body.find_all("td")
                 extracted_values = [value.text for value in values]
-                id_to_team_name[extracted_values[0]] = extracted_values[1]
+                id_to_team_name[extracted_values[1].strip()] = extracted_values[0]
 
-        #print(id_to_team_name)
+        return id_to_team_name
 
     except:    
         print("an error occured") 
@@ -103,5 +102,37 @@ def get_english_teams(login_url, target_url, email, password):
 
 if __name__ == "__main__":
     current_clubs = get_current_teams(standings_url)
-    get_english_teams(login_url, target_url, email, password)
+    id_team_name_mapping = get_english_teams(login_url, target_url, email, password)
+
+    id_team_name_keys = id_team_name_mapping.keys()
+
+    needed_mappings = {}
+
+
+    for i,club in enumerate(current_clubs):
+        if (club == 'Wolverhampton Wanderers'):
+            current_clubs[i] = "Wolves"
+            club = "Wolves"
+        elif (club == "West Ham United"):
+            current_clubs[i] = "West Ham"
+            club = "West Ham"
+        
+        parts = club.split(" ")
+        if club in id_team_name_keys:
+            needed_mappings[club] = id_team_name_mapping[club]
+        elif(parts[0] in id_team_name_keys):
+            needed_mappings[club] = id_team_name_mapping[parts[0]]
+        elif(parts[1] in id_team_name_keys):
+            needed_mappings[club] = id_team_name_mapping[parts[1]]
+
+    print(needed_mappings)
+
+
+    # for k,v in id_team_name_mapping.items():
+    #     if k in current_clubs:
+    #         needed_mappings[k] = v
+
+    # print(needed_mappings)
+
+
     
