@@ -13,3 +13,4 @@ Thumbs.db
 *.tfstate
 .terraform*
 terraform*
+.env
