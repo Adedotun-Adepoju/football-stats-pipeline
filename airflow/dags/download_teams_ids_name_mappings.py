@@ -20,8 +20,14 @@ with DAG(
     catchup=False,
     start_date= datetime(2022, 10, 26)
 ) as dag:
+    date = {{ ds }}
+    execution_year = int(date.split("-")[0])
+
+    file_name = f"{execution_year}_{execution_year + 1}_season_teams.parquet"
+    print(file_name)
+
     # download files
-    def get_teams_id_mappings(ti):
+    def get_teams_id_mappings():
         from includes.web_scraping import get_current_teams, get_english_teams, generate_csv
 
         standings_url = os.environ.get('STANDINFS_URL')
@@ -33,22 +39,12 @@ with DAG(
         current_clubs = get_current_teams(standings_url)
         id_to_team_mapping = get_english_teams(login_url, target_url, email, password)
 
-        date = {{ ds }}
-        execution_year = int(date.split("-")[0])
-
-        file_name = f"{execution_year}_{execution_year + 1}_season_teams.parquet"
-        print(file_name)
-
         generate_csv(current_clubs, id_to_team_mapping, file_name)
 
-        ti.xcom_push(key='teams_file_name', value=file_name)
-
-    def upload_gcs(bucket, ti, object_folder):
+    def upload_gcs(bucket, local_file, object_folder):
         # prevent timeout for files > 6 MB on 800 kbps upload speed
         storage.blob.MAX_MULTIPART_SIZE = 5 * 1024 * 1024 # 5 MB
         storage.blob.DEFAULT_CHUNKSIZE = 5 * 1024 * 1024 # 5 M
-
-        local_file = ti.xcom_pull(key="teams_file_name", task_ids='download_teams')
 
         client = storage.Client()
         bucket = client.bucket(bucket)
@@ -68,8 +64,11 @@ with DAG(
         python_callable=upload_gcs,
         op_kwargs= {
             "bucket": BUCKET,
+            "local_file": file_name,
             "object_folder": f"seasonal_teams"
         }
     )
+
+
 
     
