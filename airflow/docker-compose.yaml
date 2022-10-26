@@ -48,7 +48,7 @@ x-airflow-common:
   build:
     context: .
     dockerfile: ./Dockerfile
-  env_file: .env
+  env_file: ../.env
   # environment:
   #   &airflow-common-env
 
@@ -130,7 +130,7 @@ services:
       interval: 10s
       timeout: 10s
       retries: 5
-    env_file: .env
+    env_file: ../.env
     # environment:
     #   <<: *airflow-common-env
       # Required to handle warm shutdown of the celery workers properly
@@ -181,7 +181,7 @@ services:
           echo -e "\033[1;33mWARNING!!!: AIRFLOW_UID not set!\e[0m"
           echo "If you are on Linux, you SHOULD follow the instructions below to set "
           echo "AIRFLOW_UID environment variable, otherwise files will be owned by root."
-          echo "For other operating systems you can get rid of the warning with manually created .env file:"
+          echo "For other operating systems you can get rid of the warning with manually created ../.env file:"
           echo "    See: https://airflow.apache.org/docs/apache-airflow/stable/howto/docker-compose/index.html#setting-the-right-airflow-user"
           echo
         fi
@@ -222,7 +222,7 @@ services:
         chown -R "${AIRFLOW_UID}:0" /sources/{logs,dags,plugins}
         exec /entrypoint airflow version
     # yamllint enable rule:line-length
-    env_file: .env
+    env_file: ../.env
     # environment:
     #   <<: *airflow-common-env
     user: "0:0"
@@ -233,7 +233,7 @@ services:
     <<: *airflow-common
     profiles:
       - debug
-    env_file: .env
+    env_file: ../.env
     # environment:
     #   <<: *airflow-common-env
     # Workaround for entrypoint issue. See: https://github.com/apache/airflow/issues/16252
