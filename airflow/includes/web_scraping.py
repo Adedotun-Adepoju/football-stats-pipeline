@@ -135,4 +135,4 @@ def generate_csv(current_clubs, id_to_team_mapping, file_name):
     df = pd.DataFrame(columns=["team_id", "team_name"], data=data)
 
     # save the csv file
-    df.to_csv(file_name, index=False)
+    df.to_parquet(file_name, index=False)
