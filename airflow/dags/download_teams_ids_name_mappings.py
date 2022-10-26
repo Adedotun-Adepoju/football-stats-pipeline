@@ -30,7 +30,7 @@ with DAG(
     def get_teams_id_mappings():
         from includes.web_scraping import get_current_teams, get_english_teams, generate_csv
 
-        standings_url = os.environ.get('STANDINFS_URL')
+        standings_url = os.environ.get('STANDINgS_URL')
         login_url = os.environ.get('LOGIN_URL')
         target_url = os.environ.get('TARGET_URL')
         email = os.environ.get("EMAIL")
@@ -68,6 +68,13 @@ with DAG(
             "object_folder": f"seasonal_teams"
         }
     )
+
+    clean_up_task = BashOperator(
+        task_id="clean_up_task",
+        bash_command=f"rm { file_name }"
+    )
+
+    download_dataset_task >> upload_gcs_task >> clean_up_task
 
 
 
