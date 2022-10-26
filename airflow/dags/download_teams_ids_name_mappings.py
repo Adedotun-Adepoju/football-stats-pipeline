@@ -16,11 +16,11 @@ path_to_local_home = os.environ.get("AIRFLOW_HOME", "opt/airflow")
 
 with DAG(
     dag_id="mapping_teams_id_name",
-    schedule_interval="",
+    schedule_interval="0 8 15 8 *",
     catchup=False,
     start_date= datetime(2022, 10, 26)
 ) as dag:
-    date = {{ ds }}
+    date = '{{ execution_date.strftime(\'%Y-%m\') }}'
     execution_year = int(date.split("-")[0])
 
     file_name = f"{execution_year}_{execution_year + 1}_season_teams.parquet"
