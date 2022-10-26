@@ -11,6 +11,11 @@ Thumbs.db
 *.json
 *.log
 *.tfstate
-.terraform*
+*.tfstate.*
+**.terraform
+**.terraform.lock.*
 terraform*
 .env
+**__pycache__/
+**google_credentials.json
+**logs/
