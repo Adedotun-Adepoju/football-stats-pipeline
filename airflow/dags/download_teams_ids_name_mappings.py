@@ -14,23 +14,32 @@ BUCKET = os.environ.get("GCS_BUCKET")
 
 path_to_local_home = os.environ.get("AIRFLOW_HOME", "opt/airflow")
 
+execution_date = '{{ execution_date.strftime(\'%Y\') }}'
+
+
 with DAG(
     dag_id="mapping_teams_id_name",
     schedule_interval="0 8 15 8 *",
     catchup=False,
     start_date= datetime(2022, 10, 26)
 ) as dag:
-    date = '{{ execution_date.strftime(\'%Y-%m\') }}'
-    execution_year = int(date.split("-")[0])
-
-    file_name = f"{execution_year}_{execution_year + 1}_season_teams.parquet"
-    print(file_name)
+    # file_name = f"{execution_year}_{execution_year + 1}_season_teams.parquet"
+    file_name = f"{ execution_date }_season_teams.parquet"
 
     # download files
     def get_teams_id_mappings():
+        # import sys 
+
+        # cwd = os.getcwd()
+        # module_path = cwd + 'includes'
+        # print(module_path)
+
+        # # adding Folder_2 to the system path
+        # sys.path.insert(1, module_path)
+
         from includes.web_scraping import get_current_teams, get_english_teams, generate_csv
 
-        standings_url = os.environ.get('STANDINgS_URL')
+        standings_url = os.environ.get('STANDINGS_URL')
         login_url = os.environ.get('LOGIN_URL')
         target_url = os.environ.get('TARGET_URL')
         email = os.environ.get("EMAIL")
@@ -38,6 +47,8 @@ with DAG(
 
         current_clubs = get_current_teams(standings_url)
         id_to_team_mapping = get_english_teams(login_url, target_url, email, password)
+
+        print(file_name)
 
         generate_csv(current_clubs, id_to_team_mapping, file_name)
 
@@ -71,7 +82,8 @@ with DAG(
 
     clean_up_task = BashOperator(
         task_id="clean_up_task",
-        bash_command=f"rm { file_name }"
+        bash_command=f"rm { file_name }",
+        trigger_rule="all_done"
     )
 
     download_dataset_task >> upload_gcs_task >> clean_up_task
