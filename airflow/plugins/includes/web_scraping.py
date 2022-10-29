@@ -14,13 +14,6 @@ load_dotenv()
 email = os.environ.get("EMAIL")
 password = os.environ.get("PASSWORD")
 
-# url to get PL team names
-standings_url = "https://www.espn.com/soccer/standings/_/league/eng.1"
-
-login_url = "https://dashboard.api-football.com/login"
-target_url = "https://dashboard.api-football.com/soccer/ids/teams/England"
-
-
 def get_current_teams(url):
     """
     description: Scrape the current premier league teams from the url passed in
@@ -51,7 +44,10 @@ def get_english_teams(login_url, target_url, email, password):
         email(str): login email
         password(str): login passsword
     """
-    driver = webdriver.Chrome("./chromedriver")  # launch the webdriver
+    cwd = os.getcwd()
+    chromedriver_path = cwd + '/chromedriver'
+
+    driver = webdriver.Chrome(chromedriver_path)  # launch the webdriver
     driver.get(login_url)  # login page
 
     try:
