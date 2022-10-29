@@ -45,7 +45,7 @@ def get_english_teams(login_url, target_url, email, password):
         password(str): login passsword
     """
     cwd = os.getcwd()
-    chromedriver_path = cwd + '/chromedriver'
+    chromedriver_path = cwd + '/drivers/chromedriver'
 
     driver = webdriver.Chrome(chromedriver_path)  # launch the webdriver
     driver.get(login_url)  # login page
