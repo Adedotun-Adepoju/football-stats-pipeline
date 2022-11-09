@@ -25,19 +25,16 @@ with DAG(
 ) as dag:
     # file_name = f"{execution_year}_{execution_year + 1}_season_teams.parquet"
     file_name = f"{ execution_date }_season_teams.parquet"
+    current_dir = os.getcwd()
+    parent_dir = os.path.dirname(current_dir)
 
     # download files
     def get_teams_id_mappings():
-        # import sys 
-
-        # cwd = os.getcwd()
-        # module_path = cwd + 'includes'
-        # print(module_path)
-
-        # # adding Folder_2 to the system path
-        # sys.path.insert(1, module_path)
-
         from includes.web_scraping import get_current_teams, get_english_teams, generate_csv
+        
+        # logging.info(current_dir)
+        logging.info(parent_dir)
+        logging.info(os.listdir(parent_dir))
 
         standings_url = os.environ.get('STANDINGS_URL')
         login_url = os.environ.get('LOGIN_URL')
@@ -48,7 +45,7 @@ with DAG(
         current_clubs = get_current_teams(standings_url)
         id_to_team_mapping = get_english_teams(login_url, target_url, email, password)
 
-        print(file_name)
+        logging.info(id_to_team_mapping)
 
         generate_csv(current_clubs, id_to_team_mapping, file_name)
 
@@ -65,9 +62,15 @@ with DAG(
         blob = bucket.blob(gcs_path)
         blob.upload_from_filename(local_file)
 
+    display_version_task = BashOperator(
+        task_id="chrome_version",
+        bash_command=f'which google-chrome'
+    )
+
     download_dataset_task = PythonOperator(
         task_id="download_teams",
-        python_callable=get_teams_id_mappings
+        python_callable=get_teams_id_mappings,
+        trigger_rule="all_done"
     )
 
     upload_gcs_task = PythonOperator(
@@ -86,7 +89,7 @@ with DAG(
         trigger_rule="all_done"
     )
 
-    download_dataset_task >> upload_gcs_task >> clean_up_task
+    display_version_task >> download_dataset_task >> upload_gcs_task >> clean_up_task
 
 
 

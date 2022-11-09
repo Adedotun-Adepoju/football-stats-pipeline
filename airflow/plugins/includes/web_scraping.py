@@ -2,12 +2,19 @@ import os
 from urllib.request import urlopen
 from bs4 import BeautifulSoup
 import pandas as pd
+import logging
 
 from dotenv import load_dotenv
 
+import selenium
 from selenium import webdriver
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support.ui import Select
+from selenium.webdriver.chrome.options import Options
+from selenium.webdriver.common.by import By
+from selenium.webdriver.support import expected_conditions as EC
+
+print(selenium.__version__)
 
 load_dotenv()
 
@@ -45,14 +52,27 @@ def get_english_teams(login_url, target_url, email, password):
         password(str): login passsword
     """
     cwd = os.getcwd()
-    chromedriver_path = cwd + '/drivers/chromedriver-linux'
+    parent_dir = os.path.dirname(cwd)
 
-    driver = webdriver.Chrome(chromedriver_path)  # launch the webdriver
+    CHROMEDRIVER_PATH = '/usr/local/bin/chromedriver'
+    WINDOW_SIZE = "1920,1080"
+    chrome_options = Options()
+    chrome_options.add_argument('--no-sandbox')
+    chrome_options.add_argument('--disable-dev-shm-usage')
+    chrome_options.add_argument("--headless")
+    chrome_options.add_argument("--window-size=%s" % WINDOW_SIZE)
+    driver = webdriver.Chrome(executable_path=CHROMEDRIVER_PATH, chrome_options=chrome_options)
+
     driver.get(login_url)  # login page
-
+    
+    print("attempting to log in")
     try:
         driver.find_element_by_name("email").send_keys(email)  # enter email
         driver.find_element_by_name("pass").send_keys(password)  # enter password
+
+        # Bypass Captcha
+        WebDriverWait(driver, 10).until(EC.frame_to_be_available_and_switch_to_it((By.CSS_SELECTOR,"iframe[name^='a-'][src^='https://www.google.com/recaptcha/api2/anchor?']")))
+        WebDriverWait(driver, 10).until(EC.element_to_be_clickable((By.XPATH, "//span[@id='recaptcha-anchor']"))).click()
         driver.find_element_by_tag_name(
             "button"
         ).click()  # submit the email and password
@@ -94,16 +114,16 @@ def get_english_teams(login_url, target_url, email, password):
                 extracted_values = [value.text for value in values]
                 id_to_team_name[extracted_values[1].strip()] = extracted_values[0]
 
-        return id_to_team_name
+        return id_to_team_name,
 
-    except:
-        print("an error occured")
+    except Exception as e:
+        print("an error occured", e)
     finally:
         driver.close()
 
 
 def generate_csv(current_clubs, id_to_team_mapping, file_name):
-    id_team_name_keys = id_team_name_mapping.keys()
+    id_team_name_keys = id_to_team_mapping.keys()
 
     needed_mappings = {}
 

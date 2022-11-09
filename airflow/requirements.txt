@@ -1,4 +1,6 @@
 apache-airflow-providers-google 
-selenium
+selenium==3.141.0
 beautifulsoup4
 pandas
+python-dotenv
+gcsfs
