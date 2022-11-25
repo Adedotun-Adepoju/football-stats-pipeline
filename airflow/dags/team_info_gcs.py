@@ -8,6 +8,7 @@ from airflow.operators.bash import BashOperator
 from airflow.operators.python import PythonOperator
 
 from google.cloud import storage
+import time 
 
 with DAG(
     dag_id="teams_info",
@@ -23,13 +24,14 @@ with DAG(
     BUCKET = os.environ.get('GCS_BUCKET')
 
     # read team_id
-    def download_team_info_file():
+    def download_team_info_file(file_name):
         import pandas as pd
         import requests
         import json
         df = pd.read_csv(team_id_file_path)
 
         team_ids = df["team_id"].values
+        logging.info(team_ids)
 
         host_url = os.environ.get('HOST')
         api_key = os.environ.get('API_KEY')
@@ -46,10 +48,13 @@ with DAG(
         columns = ["team_id", "founded","team_name", "stadium", "capacity", "surface", "city"]
         df = pd.DataFrame(columns = columns)
 
-        for id in [42,33]:
+        count = 0
+
+        for id in team_ids:
             response = requests.get(team_info_url, headers=headers, params={ "id": id })
             response = response.json()
             team_info = response.get('response')
+            
             team = team_info[0].get('team')
             venue = team_info[0].get('venue')
 
@@ -71,12 +76,20 @@ with DAG(
             }
 
             df = df.append(team_dict, ignore_index=True)
+            
+            if(count == 10):
+                time.sleep(70)
+                count = 0
+            else:
+                count += 1 
 
-        logging.info(team_info_template)
-        logging.info(os.getcwd())
-        df.to_csv('team_info_2022-11.csv', index=False)
+        df.to_csv(file_name, index=False)
 
     def upload_to_gcs(bucket, local_file, object_name):
+        
+        current_dir = os.getcwd()
+        parent_dir = os.path.dirname(current_dir)
+        
         # prevent timeout for files > 6 MB on 800 kbps upload speed
         storage.blob.MAX_MULTIPART_SIZE = 5 * 1024 * 1024 # 5 MB
         storage.blob.DEFAULT_CHUNKSIZE = 5 * 1024 * 1024 # 5 M
@@ -90,7 +103,10 @@ with DAG(
 
     download_team_info_task = PythonOperator(
         task_id="download_team_info_task",
-        python_callable=download_team_info_file
+        python_callable=download_team_info_file,
+        op_kwargs = {
+            "file_name": team_info_template
+        }
     )
 
     upload_to_gcs_task = PythonOperator(
