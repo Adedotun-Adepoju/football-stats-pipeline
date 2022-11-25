@@ -6,6 +6,7 @@ from datetime import datetime
 from airflow import DAG
 from airflow.operators.bash import BashOperator
 from airflow.operators.python import PythonOperator
+from airflow.contrib.operators import gcs_to_bq
 
 from google.cloud import storage
 import time 
@@ -22,6 +23,8 @@ with DAG(
     team_info_template = f'{path_to_local_home}/team_info_{file_suffix}'
 
     BUCKET = os.environ.get('GCS_BUCKET')
+    PROJECT_ID = os.environ.get('PROJECT_ID')
+    BIGQUERY_DATASET = os.environ.get('BIGQUERY_DATASET')
 
     # read team_id
     def download_team_info_file(file_name):
@@ -121,10 +124,28 @@ with DAG(
         }
     )
 
+    load_csv = gcs_to_bq.GoogleCloudStorageToBigQueryOperator(
+        task_id='gcs_to_bq',
+        bucket=BUCKET,
+        source_objects = [f'team_info/{file_suffix}'],
+        destination_project_dataset_table=f'football_stats.team_info_table',
+        skip_leading_rows = 1,
+        schema_fields = [
+            {'name': 'team_id', 'type': 'STRING'},
+            {'name': 'founded', 'type': 'INTEGER'},
+            {'name': 'team_name', 'type': 'STRING'},
+            {'name': 'stadium', 'type': 'STRING'},
+            {'name': 'capacity', 'type': 'INTEGER'},
+            {'name': 'surface', 'type': 'STRING'},
+            {'name': 'city', 'type': 'STRING'},
+        ],
+        write_disposition='WRITE_TRUNCATE'
+    )
+
     clean_up_task = BashOperator(
         task_id="clean_up_task",
         bash_command=f"rm { team_info_template }",
         trigger_rule="all_done"
     )
 
-    download_team_info_task >> upload_to_gcs_task >> clean_up_task
+    download_team_info_task >> upload_to_gcs_task >> clean_up_task >> load_csv
