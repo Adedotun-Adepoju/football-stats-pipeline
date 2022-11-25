@@ -54,6 +54,8 @@ with DAG(
             response = requests.get(team_info_url, headers=headers, params={ "id": id })
             response = response.json()
             team_info = response.get('response')
+
+            logging.info("response",response)
             
             team = team_info[0].get('team')
             venue = team_info[0].get('venue')
@@ -77,7 +79,7 @@ with DAG(
 
             df = df.append(team_dict, ignore_index=True)
             
-            if(count == 10):
+            if(count == 9):
                 time.sleep(70)
                 count = 0
             else:
