@@ -41,4 +41,4 @@ seeds:
   football_stats:
       pl_teams_id:
           +column_types:
-              team_id: string 
+              id: string 

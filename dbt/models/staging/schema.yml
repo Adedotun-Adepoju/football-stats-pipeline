@@ -22,7 +22,7 @@ models:
                 severity: warn
             - relationships:
                 to: ref('pl_teams_id')
-                field: team_id
+                field: id
                 severity: warn
         - name: founded
           description: Year the team was founded
@@ -65,7 +65,7 @@ models:
                 severity: warn
             - relationships:
                 to: ref('pl_teams_id')
-                field: team_id
+                field: id
                 severity: warn
         - name: season
           description: Indicates the current season being played. It is the year in which the current season started. FOr example 2022/2023 is saved as 2022
@@ -115,7 +115,7 @@ models:
                 severity: warn
             - relationships:
                 to: ref('pl_teams_id')
-                field: team_id
+                field: id
                 severity: warn
         - name: season
           description: Indicates the current season being played. It is the year in which the current season started. FOr example 2022/2023 is saved as 2022
@@ -170,7 +170,7 @@ models:
                 severity: warn
             - relationships:
                 to: ref('pl_teams_id')
-                field: team_id
+                field: id
                 severity: warn
         - name: season
           description: Indicates the current season being played. It is the year in which the current season started. FOr example 2022/2023 is saved as 2022
