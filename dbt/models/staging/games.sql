@@ -8,7 +8,7 @@ WITH games AS (
 
 team AS (
     SELECT *
-    FROM {{ ref('pl_teams_id') }}
+    FROM {{ ref('team_id')}}
 ),
 
 final AS (
