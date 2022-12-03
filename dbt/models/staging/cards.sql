@@ -8,7 +8,7 @@ WITH cards AS (
 
 team AS (
     SELECT *
-    FROM {{ ref('team_id') }}
+    FROM {{ ref('pl_teams_id') }}
 ),
 
 final AS (
