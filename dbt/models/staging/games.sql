@@ -1,4 +1,4 @@
-{{ config(materialized='view') }}
+{{ config(materialized='table') }}
 
 SELECT DISTINCT *
 FROM {{ source('staging', 'game_stats_table') }}

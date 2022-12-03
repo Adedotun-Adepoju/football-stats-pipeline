@@ -35,7 +35,7 @@ models:
   football_stats:
     # Applies to all files under models/example/
     staging:
-      materialized: view
+      materialized: table
 
 seeds: 
   football_stats:
