@@ -1,0 +1,5 @@
+version: 2
+
+seeds: 
+  - name: pl_teams_id
+    description: Team ids mappings
