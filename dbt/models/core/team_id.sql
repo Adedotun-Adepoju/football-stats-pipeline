@@ -1,4 +1,4 @@
 {{ config(materialized='table')}}
 
-SELECT *
-FROM {{ ref('pl_teams_id')}}
+SELECT id, team_name
+FROM {{ ref('pl_teams_id') }}
