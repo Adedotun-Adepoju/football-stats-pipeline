@@ -19,41 +19,41 @@ models:
           description: Foreign key to get the team_name from the seeded table
           tests:
             - not_null:
-                severity: never
+                severity: warn
             - relationships:
                 to: ref('pl_teams_id')
                 field: team_id
-                severity: never
+                severity: warn
         - name: founded
           description: Year the team was founded
           tests: 
             - not_null:
-                severity: never 
+                severity: warn 
         - name: team_name 
           description: The name of the team
           tests: 
             - not_null: 
-                severity: never
+                severity: warn
         - name: stadium
           description: Current stadium the team plays in
           tests:
             - not_null:
-                severity: never 
+                severity: warn 
         - name: capacity 
           description: The capacity of the stadium 
           tests: 
             - not_null: 
-                severity: never 
+                severity: warn 
         - name: surface
           description: The surface of the pitch
           tests:
             - not_null:
-                severity: never 
+                severity: warn 
         - name: city 
           description: The city of the team 
           tests: 
             - not_null: 
-                severity: never 
+                severity: warn 
     
     - name: games
       description: Statisitics on games played by the current English premier league teams.
@@ -62,16 +62,16 @@ models:
           description: Foreign key to get the team_name from the seeded table
           tests:
             - not_null:
-                severity: never
+                severity: warn
             - relationships:
                 to: ref('pl_teams_id')
                 field: team_id
-                severity: never
+                severity: warn
         - name: season
           description: Indicates the current season being played. It is the year in which the current season started. FOr example 2022/2023 is saved as 2022
           tests: 
             - not_null:
-                severity: never 
+                severity: warn 
         - name: form 
           description: shows the current form of the PL team
               W = Win
@@ -79,17 +79,17 @@ models:
               L = Loss
           tests: 
             - not_null: 
-                severity: never
+                severity: warn
         - name: created_at
           description: The date which the record was created
           tests:
             - not_null:
-                severity: never 
+                severity: warn 
         - name: matches_played 
           description: Number of matches played by the PL team 
           tests: 
             - not_null: 
-                severity: never 
+                severity: warn 
         - name: home_games
           description: Number of games played at home  
         - name: home_wins
@@ -112,26 +112,26 @@ models:
           description: Foreign key to get the team_name from the seeded table
           tests:
             - not_null:
-                severity: never
+                severity: warn
             - relationships:
                 to: ref('pl_teams_id')
                 field: team_id
-                severity: never
+                severity: warn
         - name: season
           description: Indicates the current season being played. It is the year in which the current season started. FOr example 2022/2023 is saved as 2022
           tests: 
             - not_null:
-                severity: never
+                severity: warn
         - name: created_at
           description: The date which the record was created
           tests:
             - not_null:
-                severity: never
+                severity: warn
         - name: matches_played 
           description: Number of matches played by the PL team 
           tests: 
             - not_null: 
-                severity: never    
+                severity: warn    
         - name: goal_type 
           description: >
             Type of goal being recorded for in the record
@@ -140,7 +140,7 @@ models:
           tests: 
             - accepted_values:
                 values: ['for', 'against']
-                severity: never
+                severity: warn
         - name: total_goals 
           description: Number of goals scored or conceded by the PL team. Scored or conceded is determined by the goal_type
         - name: home_goals
@@ -167,26 +167,26 @@ models:
           description: Foreign key to get the team_name from the seeded table
           tests:
             - not_null:
-                severity: never
+                severity: warn
             - relationships:
                 to: ref('pl_teams_id')
                 field: team_id
-                severity: never
+                severity: warn
         - name: season
           description: Indicates the current season being played. It is the year in which the current season started. FOr example 2022/2023 is saved as 2022
           tests: 
             - not_null:
-                severity: never
+                severity: warn
         - name: created_at
           description: The date which the record was created
           tests:
             - not_null:
-                severity: never
+                severity: warn
         - name: matches_played 
           description: Number of matches played by the PL team 
           tests: 
             - not_null: 
-                severity: never    
+                severity: warn    
         - name: card_type 
           description: >
             Type of goal being recorded for in the record
@@ -195,9 +195,9 @@ models:
           tests: 
             - accepted_values:
                 values: ['yellow', 'red']
-                severity: never
+                severity: warn
             - not_null:
-                severity: never
+                severity: warn
         - name: cards_0_15
           description: yellow/red cards collected in the first 15 minutes.yellow/red determined by card_type 
         - name: cards_16_30
