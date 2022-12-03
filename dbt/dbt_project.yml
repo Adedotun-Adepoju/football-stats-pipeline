@@ -36,3 +36,9 @@ models:
     # Applies to all files under models/example/
     staging:
       materialized: view
+
+seeds: 
+  football_stats:
+      pl_teams_id:
+          +column_types:
+              team_id: string 

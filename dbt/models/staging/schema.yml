@@ -10,3 +10,204 @@ sources:
         - name: game_stats_table
         - name: cards_stats_table
         - name: team_info_table
+
+models:
+    - name: team_info
+      description: Information on the current English premier league teams.
+      columns:
+        - name: team_id 
+          description: Foreign key to get the team_name from the seeded table
+          tests:
+            - not_null:
+                severity: never
+            - relationships:
+                to: ref('pl_teams_id')
+                field: team_id
+                severity: never
+        - name: founded
+          description: Year the team was founded
+          tests: 
+            - not_null:
+                severity: never 
+        - name: team_name 
+          description: The name of the team
+          tests: 
+            - not_null: 
+                severity: never
+        - name: stadium
+          description: Current stadium the team plays in
+          tests:
+            - not_null:
+                severity: never 
+        - name: capacity 
+          description: The capacity of the stadium 
+          tests: 
+            - not_null: 
+                severity: never 
+        - name: surface
+          description: The surface of the pitch
+          tests:
+            - not_null:
+                severity: never 
+        - name: city 
+          description: The city of the team 
+          tests: 
+            - not_null: 
+                severity: never 
+    
+    - name: games
+      description: Statisitics on games played by the current English premier league teams.
+      columns:
+        - name: team_id 
+          description: Foreign key to get the team_name from the seeded table
+          tests:
+            - not_null:
+                severity: never
+            - relationships:
+                to: ref('pl_teams_id')
+                field: team_id
+                severity: never
+        - name: season
+          description: Indicates the current season being played. It is the year in which the current season started. FOr example 2022/2023 is saved as 2022
+          tests: 
+            - not_null:
+                severity: never 
+        - name: form 
+          description: shows the current form of the PL team
+              W = Win
+              D = Draw
+              L = Loss
+          tests: 
+            - not_null: 
+                severity: never
+        - name: created_at
+          description: The date which the record was created
+          tests:
+            - not_null:
+                severity: never 
+        - name: matches_played 
+          description: Number of matches played by the PL team 
+          tests: 
+            - not_null: 
+                severity: never 
+        - name: home_games
+          description: Number of games played at home  
+        - name: home_wins
+          description: Number of games won at home  
+        - name: home_loses
+          description: Number of games lost at home 
+        - name: home_draws
+          description: Number of games lost at home 
+        - name: away_games
+          description: Number of away games played   
+        - name: away_wins
+          description: Number of away games won 
+        - name: away_draws
+          description: Number of away games drawn  
+
+    - name: goals
+      description: Statistics on goals scored by teams in the English Premier League 
+      columns: 
+        - name: team_id 
+          description: Foreign key to get the team_name from the seeded table
+          tests:
+            - not_null:
+                severity: never
+            - relationships:
+                to: ref('pl_teams_id')
+                field: team_id
+                severity: never
+        - name: season
+          description: Indicates the current season being played. It is the year in which the current season started. FOr example 2022/2023 is saved as 2022
+          tests: 
+            - not_null:
+                severity: never
+        - name: created_at
+          description: The date which the record was created
+          tests:
+            - not_null:
+                severity: never
+        - name: matches_played 
+          description: Number of matches played by the PL team 
+          tests: 
+            - not_null: 
+                severity: never    
+        - name: goal_type 
+          description: >
+            Type of goal being recorded for in the record
+            for = Goals scored
+            against = Goals conceded
+          tests: 
+            - accepted_values:
+                values: ['for', 'against']
+                severity: never
+        - name: total_goals 
+          description: Number of goals scored or conceded by the PL team. Scored or conceded is determined by the goal_type
+        - name: home_goals
+          description: Number of goals scored or conceded at home. Scored or conceded is determined by the goal_type  
+        - name: away_goals
+          description: Number of away goals scored or conceded. Scored or conceded is determined by the goal_type
+        - name: goals_0_15
+          description: Goals scored or conceded in the first 15 minutes 
+        - name: goals_16_30
+          description: Goals scored or conceded between the 16th and 30th minute
+        - name: goals_31_45
+          description: Goals scored or conceded between the 31st and 45th minute   
+        - name: goals_46_60
+          description: Goals scored or conceded between the 46th and 60th minute 
+        - name: goals_61_75
+          description: Goals scored or conceded between the 61st and 75th minute 
+        - name: goals_75_90
+          description: Goals scored or conceded between the 75th and 90th minute 
+
+    - name: cards
+      description: Statistics on cards collected by teams in the English Premier League 
+      columns: 
+        - name: team_id 
+          description: Foreign key to get the team_name from the seeded table
+          tests:
+            - not_null:
+                severity: never
+            - relationships:
+                to: ref('pl_teams_id')
+                field: team_id
+                severity: never
+        - name: season
+          description: Indicates the current season being played. It is the year in which the current season started. FOr example 2022/2023 is saved as 2022
+          tests: 
+            - not_null:
+                severity: never
+        - name: created_at
+          description: The date which the record was created
+          tests:
+            - not_null:
+                severity: never
+        - name: matches_played 
+          description: Number of matches played by the PL team 
+          tests: 
+            - not_null: 
+                severity: never    
+        - name: card_type 
+          description: >
+            Type of goal being recorded for in the record
+            yellow = yellow cards
+            red = red cards
+          tests: 
+            - accepted_values:
+                values: ['yellow', 'red']
+                severity: never
+            - not_null:
+                severity: never
+        - name: cards_0_15
+          description: yellow/red cards collected in the first 15 minutes.yellow/red determined by card_type 
+        - name: cards_16_30
+          description: yellow/red cards collected between the 16th and 30th minute. yellow/red determined by card_type
+        - name: cards_31_45
+          description: yellow/red cards collected between the 31st and 45th minute. yellow/red determined by card_type   
+        - name: cards_46_60
+          description: yellow/red cards collected between the 46th and 60th minute. yellow/red determined by card_type 
+        - name: cards_61_75
+          description: yellow/red cards collected between the 61st and 75th minute. yellow/red determined by card_type 
+        - name: cards_75_90
+          description: yellow/red cards collected between the 75th and 90th minute. yellow/red determined by card_type
+        
