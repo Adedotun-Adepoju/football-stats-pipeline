@@ -1,0 +1,12 @@
+version: 2
+
+sources:
+    - name: staging 
+      database: football-stats-366417
+      schema: football_stats
+
+      tables:
+        - name: goal_stats_table
+        - name: game_stats_table
+        - name: cards_stats_table
+        - name: team_info_table
