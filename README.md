@@ -34,7 +34,10 @@ Develop an ETLT data pipeline and dashboard for viewing statistics of clubs in E
 
 ###### Infrastructute as code:
 use Terraform to create a GCS bucket and BigQuery dataset:
-- football_data_raw bucket to store parquet files 
+- football_data_raw GCS bucket to store csv files 
 - football_dataset for the ingestion into BigQuery
-- dbt_football_development for dbt development environment
-- dbt_football_production for dbt production environment
+- dbt_development for dbt development environment
+- production for dbt production environment
+
+###### Orchestration:
+Airflow was used to orchestrate the data extraction from the api, ingestion of data and transformation using dbt cloud.
