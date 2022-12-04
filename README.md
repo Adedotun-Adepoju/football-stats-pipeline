@@ -48,3 +48,8 @@ Football Data is gotten by making api requests to api-football.com. The response
 - Dag statistics_dag: To ingets latest data about english premier league clubs on the games played, goals scored and conceded, and bookings. This DAG is scheduled to be triggered every week as the english premier league matches happens every weekend. 
 
 ##### Transformations with DBT
+DBT cloud to perform joins on BQ, run seeds and tests. CI/CD pipeline was set up to prevent merging branches with failed tests.
+
+- models: All the models created in this job allowed the extraction of the latest records from the bigquery tables. 
+- tests: Tests were written to ensure we don't have null values in non-null columns, only accepted values are passsed in to some columns, and the relationships between tables are correct.
+- job: This was generated to create the datasets in production. DBT build command was configured to run for this job as this enables all the seeds to be run, as well as the tests before running the actual transformation commands.
