@@ -62,5 +62,5 @@ Dashbord can be viewed [here](https://datastudio.google.com/s/nwwjr72VXuo).
 
 **Dashboard**
 <p align="left">
-    <img alt="dashboard image" src="./assets/dashboard.png" width=100%>
+    <img alt="dashboard image" src="./assets/analytics.png" width=100%>
 </p>
