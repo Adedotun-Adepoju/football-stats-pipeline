@@ -41,3 +41,10 @@ use Terraform to create a GCS bucket and BigQuery dataset:
 
 ###### Orchestration:
 Airflow was used to orchestrate the data extraction from the api, ingestion of data and transformation using dbt cloud.
+
+###### Data ingestion:
+Football Data is gotten by making api requests to api-football.com. The response gotten is then transformef to a sutiable format and loaded into GCS buckets before loading to bigquery. All of these are managed with Apache Airflow with various DAG files:
+- DAG team_info_dag: To ingest general information about Premier league clubs. This DAG is only scheduled to be triggered once every year as these info do not change frequently
+- Dag statistics_dag: To ingets latest data about english premier league clubs on the games played, goals scored and conceded, and bookings. This DAG is scheduled to be triggered every week as the english premier league matches happens every weekend. 
+
+##### Transformations with DBT
