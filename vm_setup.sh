@@ -33,7 +33,7 @@ then
 
     cd 
 else 
-    echo -e "anaconda a;ready installed."
+    echo -e "anaconda already installed."
 fi 
 
 echo -e "\nRunning sudo apt-get update...\n"
