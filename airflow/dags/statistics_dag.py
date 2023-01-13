@@ -60,14 +60,13 @@ with DAG(
         goals_df = pd.DataFrame(columns = goals_columns)
         games_df = pd.DataFrame(columns = games_columns)
         cards_df = pd.DataFrame(columns = cards_columns)
-        current_year = datetime.now().year
 
         count = 0
 
         for id in team_ids:
             query_params = {
                 "team": id,
-                "season": current_year,
+                "season": 2022,
                 "league": league_id
             }
 
@@ -84,7 +83,7 @@ with DAG(
             for goal_type in ['for', 'against']:
                 goals_dict = {
                     'team_id': id,
-                    "season": current_year,
+                    "season": 2022,
                     "matches_played": fixtures.get('played').get('total'),
                     'created_at': current_date,
                     "goal_type": goal_type,
@@ -104,7 +103,7 @@ with DAG(
             for card_type in ['yellow', 'red']:
                 cards_dict = {
                     'team_id': id,
-                    'season': current_year,
+                    'season': 2022,
                     "matches_played": fixtures.get('played').get('total'),
                     'created_at': current_date,
                     "card_type": card_type,
@@ -120,7 +119,7 @@ with DAG(
 
             games_dict = {
                 'team_id': id,
-                'season': current_year,
+                'season': 2022,
                 'form': statistics.get('form'),
                 'created_at': current_date,
                 'matches_played': fixtures.get('played').get('total'),
