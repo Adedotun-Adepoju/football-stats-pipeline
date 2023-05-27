@@ -61,7 +61,7 @@ resource "google_bigquery_dataset" "football_dbt_prod" {
 # Ref: https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/compute_instance
 resource "google_compute_instance" "default" {
   name = var.compute_engine
-  # region = var.region
+  region = var.region
   zone = var.zone
   machine_type = "custom-4-16384" # 4 CPUs and 16GB ram
 
