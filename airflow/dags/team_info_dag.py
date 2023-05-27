@@ -17,7 +17,7 @@ with DAG(
     catchup=False,
     start_date=datetime(2022, 11, 1)
 ) as dag:
-    team_id_file_path = "gcs://football_datalake/Team_ids/pl_teams.csv"
+    team_id_file_path = "gcs://football_stats_datalake/Team_ids/pl_teams.csv"
     path_to_local_home = os.environ.get("AIRFLOW_HOME", "/opt/airflow")
     file_suffix = "{{ execution_date.strftime(\'%Y-%m\') }}.csv"
     team_info_template = f'{path_to_local_home}/team_info_{file_suffix}'
