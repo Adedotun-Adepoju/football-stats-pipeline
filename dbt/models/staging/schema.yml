@@ -2,7 +2,7 @@ version: 2
 
 sources:
     - name: staging 
-      database: football-stats-366417
+      database: data-engineering-388013
       schema: football_stats
 
       tables:
