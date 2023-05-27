@@ -4,7 +4,7 @@ variable project {
 
 variable "credentials" {
     description = "path to service account key"
-    default = "~/.google/credentials/football-stats-366417-05df9d28434b.json"
+    default = "~/.google/credentials/data-engineering-388013-76effb46e8dc.json"
 }
 
 variable "region" {
@@ -13,9 +13,14 @@ variable "region" {
     type = string
 }
 
-variable "data_lake_bucket" {
+variable "zone"{
+    description = "Zone for GCP resources"
+    default = "europe-west1-b"
+}
+
+variable "football_data_lake_bucket" {
     description = "The name of the GCS bucket to store raw files"
-    default = "football_datalake"
+    default = "football_stats_datalake"
 }
 
 variable "storage_class" {
@@ -23,20 +28,26 @@ variable "storage_class" {
     default = "STANDARD"
 }
 
-variable "bq_dataset" {
+variable "football_bq_dataset" {
     description = "BIGQUERY Datatset to write data to"
     type = string
     default = "football_stats"
 }
 
-variable "bq_dbt_dev_dataset" {
+variable "football_bq_dbt_dev" {
     description = "BigQuery dataset to be used by dbt during developement"
     type = string
-    default = "dbt_development"
+    default = "football_dbt_development"
 }
 
-variable "bq_dbt_prod_dataset" {
+variable "football_bq_dbt_prod" {
     description = "BigQuery Dataset to be used by dbt during production"
     type = string
-    default = "production"
+    default = "football_dbt_production"
+}
+
+variable "compute_engine" {
+    description = "VM instance name"
+    type=string
+    default = "data-pipeline-engine"
 }
